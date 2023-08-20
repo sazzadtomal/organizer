@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import Sidebar from "./features/Sidebar/Sidebar";
+import Navbar from "./features/Navbar/Navbar";
+import { getActiveMenu,getDarkMode} from "./features/Navbar/NavbarSlice";
+import {useSelector } from "react-redux/es/hooks/useSelector";
+import Movies from "./pages/Movies/Movies";
+import Weather from "./pages/Weather/Weather";
 
 function App() {
+
+  const activeMenu=useSelector(getActiveMenu);
+  const darkMode=useSelector(getDarkMode)
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+   
+    <div className={`${darkMode ? "dark" : " "}`}>
+      <div className='relative flex' >
+        {activeMenu ? (<div className='dark:bg-slate-800 dark:shadow-cyan-800 w-72 fixed bg-white shadow-xl p-5'>
+                <Sidebar/>
+              </div>) : (<div className='w-0 overflow-hidden box-border' > <Sidebar/></div>)}
+              
+              
+              
+              
+            <div className={`w-full fixed md:static h-screen ${activeMenu ? "ml-72" : "flex-1" } dark:bg-slate-700 `} >
+              <div className='fixed md:static bg-main-bg  w-full'>
+                  <Navbar/>
+              </div>
+            <Movies/>
+           
+                  
+            </div>
+      </div>
     </div>
-  );
+
+  )
 }
 
 export default App;
