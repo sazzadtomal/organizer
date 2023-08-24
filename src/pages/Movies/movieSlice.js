@@ -12,6 +12,9 @@ const movieSlice=createSlice({
      reducers:{
         addMovie: (state,action)=>{
             movieAdapter.addOne(state,action.payload)
+        },
+        removeMovie: (state,action)=>{
+            movieAdapter.removeOne(state,action.payload)
         }
      }
 
@@ -19,7 +22,7 @@ const movieSlice=createSlice({
 })
 
 
-export const {addMovie}=movieSlice.actions
+export const {addMovie,removeMovie}=movieSlice.actions
 
 
 

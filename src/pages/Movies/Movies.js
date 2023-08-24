@@ -2,7 +2,7 @@ import Search from "../../features/Search/Search"
 import { useState} from "react"
 import { useGetMovieByNameQuery } from "./moviesApi"
 import {AiOutlinePlusCircle} from "react-icons/ai"
-import {mymovies,addMovie} from "./movieSlice"
+import {mymovies,addMovie,removeMovie} from "./movieSlice"
 import {useSelector, useDispatch} from "react-redux";
 
 
@@ -18,7 +18,7 @@ const Movies = () => {
   let watchList=<div className=" flex justify-center items-center h-48 w-32 bg-gray-300 opacity-50 "> Add Movies! </div>
 
   if(watchListData){
-    watchList=watchListData.map(movie=>(<div className=" flex p-1 justify-center items-center h-48 w-48 shrink-0  bg-gray-300  ">{movie.Title}</div>))
+    watchList=watchListData.map(movie=>(<div onClick={()=>dispatch(removeMovie(movie.imdbID))} className=" flex p-1 justify-center items-center h-48 w-48 shrink-0  bg-gray-300  ">{movie.Title}</div>))
   }
   
   
@@ -44,9 +44,15 @@ const Movies = () => {
     
     <h2 className="text-2xl font-semibold dark:text-stone-200">Current Watchlist.</h2>
     
+
+    <div>
+      <div className="m-auto flex gap-2 w-full overflow-scroll ">{watchList}</div>
+    </div>
+
+
     <Search modifier={setQuery}/>
      
-    <div className="overflow-y-scroll p-2 rounded-md w-full  lg:w-2/3 flex flex-col m-auto ">
+    <div className="overflow-y-scroll h-4/6 p-2 rounded-md w-full  lg:w-2/3 flex flex-col m-auto ">
       {searchMovies}
     </div>
     
