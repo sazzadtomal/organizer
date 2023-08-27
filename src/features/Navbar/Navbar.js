@@ -4,6 +4,7 @@ import { useDispatch,useSelector} from "react-redux"
 import {GiHamburgerMenu} from "react-icons/gi"
 import {CgDarkMode} from "react-icons/cg"
 import {CiSettings} from "react-icons/ci"
+import { NavLink } from "react-router-dom"
 
 
 
@@ -39,18 +40,14 @@ const Navbar = () => {
   },[screenSize,dispatch]
   )
 
-
-
-  console.log("navbar rendering",screenSize,activeMenu)
-
-
-
-
-
   return (
     <div className='bg-gray-100 dark:text-stone-300 justify-between w-full h-full flex items-center p-4 box-border dark:bg-slate-800 ' >
         <div className="text-2xl " onClick={()=>dispatch(setActiveMenu(activeMenu ? false : true))}><GiHamburgerMenu/></div>
-        <div className="flex gap-3 ml-2">
+        <div className="flex  gap-3 items-center ml-2">
+          <NavLink to="/login" className="border hover:bg-black hover:text-white text-sm rounded-full p-1 px-4 ">Login</NavLink>
+          <NavLink to="/register" className="border hover:bg-black hover:text-white text-sm rounded-full p-1 px-4 ">Register</NavLink>
+        
+
           <div className="text-2xl" onClick={()=>dispatch(setDarkMode())}><CgDarkMode/></div>
           <div className="text-2xl"><CiSettings/></div>
         </div>

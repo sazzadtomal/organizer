@@ -26,7 +26,7 @@ export const {addMovie,removeMovie}=movieSlice.actions
 
 
 
-export const {selectAll:mymovies }=movieAdapter.getSelectors((state) => state.movies)
+export const {selectAll:mymovies, selectIds:movieIds}=movieAdapter.getSelectors((state) => state.movies)
 
 
 export default movieSlice.reducer

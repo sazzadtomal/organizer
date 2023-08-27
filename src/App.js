@@ -5,6 +5,8 @@ import {useSelector } from "react-redux/es/hooks/useSelector";
 import Movies from "./pages/Movies/Movies";
 import Weather from "./pages/Weather/Weather";
 import {Routes, Route } from "react-router-dom";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 
 function App() {
 
@@ -30,11 +32,15 @@ function App() {
                 </div>
               <Routes>
                 <Route path="/movies" element={<Movies/>} />
+                <Route path="/login" element={<Login/>} />
+                <Route path="/register" element={<Register/>} />
               </Routes>
         
         
               </div>
         </div>
+           
+
     </div>
 
   )
