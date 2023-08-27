@@ -3,10 +3,10 @@ import { useState,useEffect,useRef } from 'react'
 import { NavLink } from 'react-router-dom';
 import { faCheck,faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import axios from "../../api/axios"
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-
+const Register_URL="/register"
 
 
 const RegisterForm = () => {
@@ -28,6 +28,8 @@ const RegisterForm = () => {
 
     const [errMsg, setErrMsg] = useState();
     const [success, setSuccess] = useState(false);
+
+    
 
     useEffect(()=>{
         userRef.current.focus()
@@ -52,7 +54,7 @@ const RegisterForm = () => {
 
 
 
-    const handleSubmit=(e)=>{
+    const handleSubmit=async (e)=>{
 
         e.preventDefault()
         const v1 = USER_REGEX.test(user);
@@ -62,28 +64,49 @@ const RegisterForm = () => {
             return;
         }
 
+        try {
+        const response=await axios.post(Register_URL,
+          JSON.stringify({user,pwd}),{
+            headers:{ "content-Type": "application/json"},
+            withCredentials:true
+          }
+        );
+        setSuccess(true)
+
+
+        } catch (err) { 
+            if(!err?.response){
+                setErrMsg("No server response")
+            }
+            else if(err.response?.status===409){
+                setErrMsg("Username taken")
+            }
+        }
+
+
+
     }
 
 
   return (
-    <div className='p-4 md:w-1/2 xl:w-2/5  bg-gray border rounded-lg'>
+    <section className='p-4 md:w-1/2 xl:w-2/5  bg-gray border rounded-lg'>
 
-      <p ref={errRef} className={`${errMsg ? "text-red-700 " : "left-full"+"absolute"} `} aria-live="assertive">{errMsg}</p>
+      <p ref={errRef} className={`${errMsg ? "bg-red-300 p-1 rounded mb-2 " : "left-full absolute"} `} aria-live="assertive">{errMsg}</p>
         <form onSubmit={handleSubmit}  className='flex text-sm md:text-md justify-between flex-col gap-2'>
         <label htmlFor="user">
                             Username:
                             <span>{" "}</span> 
-                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "left-full "+"absolute"} />
-                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "left-full "+"absolute": "text-red-500"} />
+                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "left-full absolute"} />
+                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "left-full absolute": "text-red-500"} />
                         </label>
             <input 
             type='text' value={user} onChange={(e)=>setUser(e.target.value)} 
             autoComplete='off' aria-invalid={validName ? "false" : "true"} 
-            aria-describedby='uidnore' required className=' border outline-none dark:border-cyan-700 dark:bg-slate-500' 
+            aria-describedby='uidnote' required className=' border outline-none dark:border-cyan-700 dark:bg-slate-500' 
             ref={userRef} id='user' onFocus={()=>setUserFocus(true)}
             onBlur={()=>setUserFocus(false)} />
 
-            <p id="uidnote" className={userFocus && user && !validName ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed "+"left-full"}>
+            <p id="uidnote" className={userFocus && user && !validName ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed left-full"}>
                             4 to 24 characters.<br />
                             Must begin with a letter.<br />
                             Letters, numbers, underscores, hyphens allowed.
@@ -94,13 +117,13 @@ const RegisterForm = () => {
                         <label htmlFor="password">
                             Password:
                             <span>{" "}</span> 
-                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "" : "left-full "+"absolute"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "left-full "+"absolute" : "text-red-500"} />
+                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "" : "left-full absolute"} />
+                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "left-full absolute" : "text-red-500"} />
                         </label>
-            <input value={pwd} onChange={(e)=>setPwd(e.target.value)} type='password' className=' border outline-none dark:border-cyan-700 dark:bg-slate-500' id='password'  onFocus={()=>setPwdFocus(true)}
+            <input  aria-describedby='pwdnote' value={pwd} onChange={(e)=>setPwd(e.target.value)} type='password' className=' border outline-none dark:border-cyan-700 dark:bg-slate-500' id='password'  onFocus={()=>setPwdFocus(true)}
             onBlur={()=>setPwdFocus(false)} />
 
-             <p id="pwdnote" className={pwdFocus && !validPwd ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed "+"left-full"}>
+             <p id="pwdnote" className={pwdFocus && !validPwd ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed left-full"}>
                             8 to 24 characters.<br />
                             Must include uppercase and lowercase letters, a number and a special character.<br />
                             Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
@@ -111,8 +134,8 @@ const RegisterForm = () => {
                         <label htmlFor="confirm_pwd">
                             Confirm Password:
                             <span>{" "}</span> 
-                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ?  "" : "left-full "+"absolute"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "left-full "+"absolute" : "text-red-500"} />
+                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ?  "" : "left-full absolute"} />
+                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "left-full absolute" : "text-red-500"} />
                         </label>
                         <input
 
@@ -127,7 +150,7 @@ const RegisterForm = () => {
                             onFocus={() => setMatchFocus(true)}
                             onBlur={() => setMatchFocus(false)}
                         />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed "+"left-full"}>
+                        <p id="confirmnote" className={matchFocus && !validMatch ? "bg-gray-800 text-white px-4 p-2 rounded-lg " : "fixed left-full"}>
                             Must match the first password input field.
                         </p>
 
@@ -143,7 +166,7 @@ const RegisterForm = () => {
        
 
 
-    </div>
+    </section>
 
   )
 }
