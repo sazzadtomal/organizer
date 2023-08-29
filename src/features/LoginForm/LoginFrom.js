@@ -1,8 +1,7 @@
 import { useRef,useState,useEffect} from "react"
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate,useLocation } from "react-router-dom";
 import { setAuth,getAuth } from "./loginSlice";
 import { useDispatch,useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 
 const LOGIN_URL="/auth"
@@ -12,6 +11,10 @@ const LoginFrom = () => {
     const navigate=useNavigate()
     const dispatch=useDispatch();
     const auth=useSelector(getAuth)
+    const location=useLocation();
+    const from=location.state?.from?.pathname || "/"
+
+    console.log(location)
 
     const userRef = useRef();
     const errRef = useRef();
@@ -52,7 +55,7 @@ const LoginFrom = () => {
 
 
             dispatch(setAuth({user,pwd,roles,accessToken}))
-            navigate("/movies")
+            navigate(from, { replace:true })
 
             
         } catch (err) {
@@ -104,7 +107,7 @@ const LoginFrom = () => {
 
         <p className='mt-8 text-sm'>
             Need an account? <br/>
-            <NavLink className="hover:font-bold" to="/register"> Register!</NavLink>
+            <NavLink state={{from:from}} className="hover:font-bold" to="/register"> Register!</NavLink>
         </p>
        
 

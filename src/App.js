@@ -1,48 +1,42 @@
-import Sidebar from "./features/Sidebar/Sidebar";
-import Navbar from "./features/Navbar/Navbar";
-import { getActiveMenu,getDarkMode} from "./features/Navbar/NavbarSlice";
-import {useSelector } from "react-redux/es/hooks/useSelector";
-import Movies from "./pages/Movies/Movies";
-import Weather from "./pages/Weather/Weather";
 import {Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
+import RequireOath from "./features/RequireOath/RequireOath"
+import Layout from "./features/Layout/Layout"
+import Music from "./pages/Music/Music"
+import Movies from "./pages/Movies/Movies";
 import Register from "./pages/Register/Register";
+import Todos from "./pages/Todos/Todos"
+import Weather from "./pages/Weather/Weather"
+import Home from "./pages/Home/Home"
+
 
 function App() {
 
-  const activeMenu=useSelector(getActiveMenu);
-  const darkMode=useSelector(getDarkMode)
-
-
   return (
-   
-    <div className={`${darkMode ? "dark" : " "}`}>
-     
-        <div className='relative flex' >
-          {activeMenu ? (<div className='dark:bg-slate-800 dark:shadow-cyan-800 w-72 fixed bg-white shadow-xl p-5'>
-                  <Sidebar/>
-                </div>) : (<div className='w-0 overflow-hidden box-border' > <Sidebar/></div>)}
-        
-        
-        
-        
-              <div className={`w-full fixed md:static h-screen ${activeMenu ? "ml-72" : "flex-1" } dark:bg-slate-700 overflow-hidden `} >
-                <div className='fixed md:static bg-main-bg  w-full'>
-                    <Navbar/>
-                </div>
-              <Routes>
-                <Route path="/movies" element={<Movies/>} />
+             <Routes>
+               
+              {/* Not Protected */}
+                <Route path="/" element= {<Layout/>}>
                 <Route path="/login" element={<Login/>} />
                 <Route path="/register" element={<Register/>} />
+
+                
+                {/* Protected */}
+
+                <Route element={<RequireOath/>}>
+                  <Route path="/" element={<Home/>} />
+                  <Route path="/movies" element={<Movies/>} />
+                  <Route path="/music" element={<Music/>} />
+                  <Route path="/todos" element={<Todos/>} />
+                  <Route path="/weather" element={<Weather/>} />
+                </Route>
+               
+               </Route>
+
+                
               </Routes>
         
         
-              </div>
-        </div>
-           
-
-    </div>
-
   )
 }
 

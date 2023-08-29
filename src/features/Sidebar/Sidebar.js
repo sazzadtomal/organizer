@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setActiveMenu } from '../Navbar/NavbarSlice'
-const catagories=["Home", "Weather", "Music","Movies","Todos"]
+const catagories=["Weather", "Music","Movies","Todos"]
 
 
 const Sidebar = () => {
@@ -14,6 +14,10 @@ const Sidebar = () => {
       </div>
 
       <ul className='pl-2'>
+      <li onClick={()=>dispatch(setActiveMenu())} className='dark:text-stone-300 cursor-pointer hover:text-slate-700 hover:text-2xl p-2 mb-4 ' >
+          <NavLink to="/" key="home" >Home</NavLink>
+        </li>
+
         {catagories.map(cat=><li onClick={()=>dispatch(setActiveMenu())} className='dark:text-stone-300 cursor-pointer hover:text-slate-700 hover:text-2xl p-2 mb-4 ' >
           <NavLink to={`/${cat.toLowerCase()}`} key={cat} >{cat}</NavLink>
         </li>)}

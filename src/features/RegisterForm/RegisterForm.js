@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState,useEffect,useRef } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink,useLocation,useNavigate } from 'react-router-dom';
 import { faCheck,faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from "../../api/axios"
@@ -12,7 +12,11 @@ const Register_URL="/register"
 const RegisterForm = () => {
     const userRef = useRef();
     const errRef = useRef();
+    const location=useLocation()
+    const navigate=useNavigate()
+    const from=location?.state?.from || "/"
 
+    console.log(location)
 
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
@@ -71,7 +75,10 @@ const RegisterForm = () => {
             withCredentials:true
           }
         );
-        setSuccess(true)
+
+
+        navigate(from)
+       
 
 
         } catch (err) { 
