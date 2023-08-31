@@ -5,6 +5,7 @@ import {AiOutlinePlusCircle} from "react-icons/ai"
 import {AiOutlineMinusCircle} from "react-icons/ai"
 import {mymovies,addMovie,removeMovie,movieIds} from "./movieSlice"
 import {useSelector, useDispatch} from "react-redux";
+import {getAuth} from "../../features/LoginForm/loginSlice"
 
 
 const Movies = () => {
@@ -14,21 +15,26 @@ const Movies = () => {
   const [query,setQuery]=useState("")
   const {data}=useGetMovieByNameQuery(query)
   const watchIds=useSelector(movieIds)
+
+  const auth=useSelector(getAuth)
   
   console.log(watchListData)
   
-  let watchList=<div className=" flex justify-center items-center h-48 w-32 bg-gray-300 opacity-50 "> Add Movies! </div>
+  let watchList=<div className=" flex justify-center items-center h-48 w-32 bg-gray-300 opacity-50"> Add Movies! </div>
 
   if(watchListData){
-    watchList=watchListData.map(movie=>(<div className="flex-col justify-between flex p-4 h-48 w-48 shrink-0  bg-gray-300  ">
-        <div>
-          <h1 className="mb-2">{movie.Title}</h1>
-          <h2>{movie.Year}</h2>
-        </div>
-      <span className="flex gap-2 items-center">
-        <AiOutlineMinusCircle className="justify-self-end text-2xl" onClick={()=>dispatch(removeMovie(movie.imdbID))} />
-        <p className="text-sm">remove</p>
-      </span>
+    watchList=watchListData.map(movie=>(<div className="rounded-xl flex w-64 md:w-1/2 my-2 lg:w-1/5 shrink-0 md:p-4 sm:p-2 gap-2  bg-gray-300  ">
+     
+          <img className="w-24 h-36 md:w-36 md:h-48 text-sm" src={movie.Poster}/>
+          <div className="flex flex-col justify-between">
+            <div>
+              <h1 className="">{movie.Title}</h1>
+              <h2>{movie.Year}</h2>
+            </div>
+           <AiOutlineMinusCircle className=" my-4 text-2xl" onClick={()=>dispatch(removeMovie(movie.imdbID))} />
+ 
+          </div>
+      
       
       
       </div>))

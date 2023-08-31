@@ -16,8 +16,6 @@ const RegisterForm = () => {
     const navigate=useNavigate()
     const from=location?.state?.from || "/"
 
-    console.log(location)
-
     const [user, setUser] = useState('');
     const [validName, setValidName] = useState(false);
     const [userFocus, setUserFocus] = useState(false);

@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setActiveMenu } from '../Navbar/NavbarSlice'
-const catagories=["Weather", "Music","Movies","Todos"]
+const catagories=["Weather", "Music","Movies","Todos","Admin"]
 
 
 const Sidebar = () => {

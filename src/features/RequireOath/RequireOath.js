@@ -8,7 +8,9 @@ const RequireOath = () => {
 
 
   return (
-     auth?.user? <Outlet/> :
+
+   auth?.user?
+      <Outlet/> :
      <Navigate to="/login" state={ {from: location} } replace />
   )
 }
